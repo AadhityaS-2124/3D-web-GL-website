@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Neural Nexus - An ultra-premium, cinematic 3D digital WebGL experience demonstrating luxury motion design." />
+    <title>Neural Nexus // Cinematic 3D Experience</title>
+  </head>
+  <body>
+    <!-- WebGL Rendering Canvas -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+    <div class="custom-cursor-ring" id="custom-cursor-ring"></div>
+
+    <!-- Minimalist Percentage Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="preloader-title">NEURAL<span>NEXUS</span></div>
+      <div class="preloader-bar-bg">
+        <div class="preloader-bar" id="preloader-bar"></div>
+      </div>
+      <div class="preloader-percentage" id="preloader-percentage">0%</div>
+    </div>
+
+    <!-- Floating Brand Navigation Header -->
+    <header class="header interactive-ui">
+      <a href="#" class="logo">NEURAL<span>NEXUS</span></a>
+      <nav class="navbar">
+        <a href="#hero" class="nav-link">Prologue</a>
+        <a href="#synapse" class="nav-link">Synapse</a>
+        <a href="#kinetics" class="nav-link">Kinetics</a>
+        <a href="#chronos" class="nav-link">Chronos</a>
+        <a href="#epilogue" class="nav-link">Epilogue</a>
+      </nav>
+    </header>
+
+    <!-- Right-Side Scroll Track Indicator -->
+    <div class="scroll-progress-container interactive-ui">
+      <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Side Navigation Dot Selectors -->
+    <div class="section-nav interactive-ui">
+      <div class="section-dot active" data-section="0"></div>
+      <div class="section-dot" data-section="1"></div>
+      <div class="section-dot" data-section="2"></div>
+      <div class="section-dot" data-section="3"></div>
+      <div class="section-dot" data-section="4"></div>
+    </div>
+
+    <!-- Main Dynamic Scrolling Content Overlay -->
+    <div id="app">
+      
+      <!-- Section 1: Hero -->
+      <section id="hero" class="scroll-section in-view">
+        <div class="section-content">
+          <div class="section-number">01 // PROLOGUE</div>
+          <h1 class="hero-title">KINETIC<br>QUANTUM <span>CORE</span></h1>
+          <p class="hero-subtitle">Premium WebGL Spatial Core</p>
+          <p class="section-desc">
+            An exploration of physical refractive mediums and intricate rotational kinematics. Scroll to venture deeper into the single-scene digital canvas.
+          </p>
+          <a href="#synapse" class="btn btn-gold scroll-to-btn">INITIATE TRAJECTORY</a>
+        </div>
+        
+        <div class="scroll-indicator">
+          <span class="scroll-text">Scroll Down</span>
+          <div class="scroll-line"></div>
+        </div>
+      </section>
+
+      <!-- Section 2: Neural Synapse -->
+      <section id="synapse" class="scroll-section section-right">
+        <div class="section-content glass-card">
+          <div class="section-number">02 // SYNAPSE</div>
+          <h2 class="section-title">NEURAL LATTICE<br>STRUCTURE</h2>
+          <p class="section-desc">
+            A self-assembling network of titanium nodes floating in a multi-dimensional spatial grid. Elements calculate proximity and emit dynamic wireframe connection filaments in real-time.
+          </p>
+          <a href="#kinetics" class="btn scroll-to-btn">ANALYZE TELEMETRY</a>
+        </div>
+      </section>
+
+      <!-- Section 3: Kinetic Rings -->
+      <section id="kinetics" class="scroll-section">
+        <div class="section-content glass-card">
+          <div class="section-number">03 // KINETICS</div>
+          <h2 class="section-title">KINETIC TORUS<br>SCULPTURE</h2>
+          <p class="section-desc">
+            A highly polished dark-titanium torus knot surrounded by orbiting micro-satellites. Hover over the central core or outer rings to activate micro-dynamic reactions.
+          </p>
+          <a href="#chronos" class="btn scroll-to-btn">SYSTEM SPECIFICATIONS</a>
+        </div>
+      </section>
+
+      <!-- Section 4: Specifications & Inspect Mode Intro -->
+      <section id="chronos" class="scroll-section section-right">
+        <div class="section-content glass-card">
+          <div class="section-number">04 // CHRONOS</div>
+          <h2 class="section-title">INTERACTIVE<br>DIAGNOSTICS</h2>
+          <p class="section-desc">
+            Select, inspect, and analyze objects in our environment. Hover over the floating assets and click to engage the camera's focused Close-Up Telemetry.
+          </p>
+          <div class="btn btn-gold" id="inspect-prompt-btn">ENGAGE FOCUS MODE</div>
+        </div>
+      </section>
+
+      <!-- Section 5: Epilogue / Contact form -->
+      <section id="epilogue" class="scroll-section section-center">
+        <div class="section-content glass-card">
+          <div class="section-number">05 // EPILOGUE</div>
+          <h2 class="section-title">ACQUIRE CORE ACCESS</h2>
+          <p class="section-desc">
+            Establish connection with our creative technical labs to deploy this WebGL architecture to your digital system.
+          </p>
+          <form class="contact-grid" onsubmit="event.preventDefault()">
+            <input type="text" class="contact-input" placeholder="ACCESS CODE" />
+            <input type="email" class="contact-input" placeholder="COMMUNICATION ID" />
+            <textarea class="contact-input contact-textarea" placeholder="TRANSMISSION CONTENT"></textarea>
+            <button type="submit" class="btn btn-gold">TRANSMIT INQUIRY</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Focused Inspect Mode Detail Overlay -->
+    <div class="inspect-overlay" id="inspect-overlay">
+      <button class="inspect-close" id="inspect-close">
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        Return to Path
+      </button>
+      <div class="inspect-card glass-card" id="inspect-card">
+        <div class="section-number" id="inspect-object-label">ASSET_IDENTIFIER</div>
+        <h3 class="section-title" id="inspect-object-title">TELEMETRY PREVIEW</h3>
+        <p class="section-desc" id="inspect-object-desc">Detailed physical diagnostics and refraction coefficient metrics.</p>
+        <div class="inspect-meta">
+          <div class="meta-item">
+            <div class="meta-label">Roughness Map</div>
+            <div class="meta-val" id="inspect-object-rough">0.12</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">PBR Transmission</div>
+            <div class="meta-val" id="inspect-object-trans">90%</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">System State</div>
+            <div class="meta-val">ACTIVE</div>
+          </div>
+        </div>
+        <button class="btn btn-gold" id="inspect-action-btn">ENGAGE POWER CORE</button>
+      </div>
+    </div>
+
+    <!-- Bottom Performance/Quality Stats Widget -->
+    <div class="footer-stats interactive-ui">
+      <span>FPS: <span id="fps-display">60</span></span>
+      <span>RENDER: <span id="quality-display">HIGH-PBR</span></span>
+    </div>
+
+    <!-- Application Script Entry Point -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
