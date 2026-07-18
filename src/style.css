@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
-  --color-bg: #060608;
+  --color-bg: radial-gradient(circle at center, #080a1c 0%, #030408 100%);
   --color-text-primary: #ffffff;
   --color-text-muted: #8e8e93;
   --color-accent: #dcb44c; /* Liquid Gold */

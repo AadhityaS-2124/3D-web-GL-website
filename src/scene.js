@@ -80,7 +80,7 @@ export class SceneManager {
   initScene() {
     // 1. Scene
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(0x08080a, 0.015);
+    this.scene.fog = new THREE.FogExp2(0x080a1c, 0.012);
 
     // 2. Camera
     this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 100);
@@ -90,13 +90,14 @@ export class SceneManager {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: false, // Turned off since we use SMAA in post-processing
-      alpha: false,
+      alpha: true,      // Enable alpha to let the CSS space background gradient show
       powerPreference: "high-performance",
       stencil: false,
       depth: true
     });
     this.renderer.setSize(this.width, this.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setClearColor(0x000000, 0); // Transparent clear
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -104,8 +105,8 @@ export class SceneManager {
   }
 
   initLights() {
-    // Ambient Light
-    this.ambientLight = new THREE.AmbientLight(0x0a0a0d, 0.8);
+    // Ambient Light (Rich deep space blue ambient fill)
+    this.ambientLight = new THREE.AmbientLight(0x0f152d, 1.2);
     this.scene.add(this.ambientLight);
 
     // Key Light (Sharp shadows)

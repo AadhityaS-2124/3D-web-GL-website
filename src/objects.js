@@ -54,6 +54,52 @@ function createParticleField() {
   return new THREE.Points(geometry, material);
 }
 
+// Starfield background generator
+function createStarfield() {
+  const count = 1500;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  
+  const colorChoices = [
+    new THREE.Color(0xffffff), // Ice-white
+    new THREE.Color(0xaad8ff), // Soft blue
+    new THREE.Color(0xffe8ad)  // Muted gold
+  ];
+  
+  for (let i = 0; i < count * 3; i += 3) {
+    const radius = 100 + Math.random() * 150;
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+    
+    positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+    positions[i + 2] = radius * Math.cos(phi);
+    
+    const col = colorChoices[Math.floor(Math.random() * colorChoices.length)];
+    colors[i] = col.r;
+    colors[i + 1] = col.g;
+    colors[i + 2] = col.b;
+  }
+  
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  
+  const material = new THREE.PointsMaterial({
+    size: 0.35,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    map: createParticleTexture()
+  });
+  
+  return new THREE.Points(geometry, material);
+}
+
 // 2. Undulating Topological Background Grid
 function createBackgroundGrid() {
   const width = 100;
@@ -73,10 +119,10 @@ function createBackgroundGrid() {
   geometry.userData = { initialY };
 
   const material = new THREE.MeshStandardMaterial({
-    color: 0x1f2023, // Muted gray wireframe
+    color: 0x0b2d5a, // Deep space blue wireframe
     wireframe: true,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.24,
     roughness: 0.9,
     metalness: 0.1
   });
@@ -322,8 +368,8 @@ function createKineticTorus() {
   group.add(torusKeyLight);
 
   // Background aura light behind the torus to create a silhouette backdrop effect
-  const torusBackLight = new THREE.PointLight(0xdcb44c, 9.0, 12);
-  torusBackLight.position.set(0, 0, -4.0); // directly behind the torus knot
+  const torusBackLight = new THREE.PointLight(0x0066ff, 12.0, 14);
+  torusBackLight.position.set(-1.0, 0.5, -4.0); // directly behind the torus knot
   group.add(torusBackLight);
 
   return group;
@@ -331,11 +377,13 @@ function createKineticTorus() {
 
 // Master Creator function
 export function create3DObjects(scene) {
-  // Add particles & background grid
+  // Add particles, background stars, & background grid
   const particles = createParticleField();
+  const stars = createStarfield();
   const bgGrid = createBackgroundGrid();
   
   scene.add(particles);
+  scene.add(stars);
   scene.add(bgGrid);
 
   // Create core section anchors
