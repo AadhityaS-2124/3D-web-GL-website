@@ -316,6 +316,16 @@ function createKineticTorus() {
   group.add(satGroup);
   group.userData = { satellites };
 
+  // Local light to capture glossy clearcoat metallic reflections (glistening curves)
+  const torusKeyLight = new THREE.PointLight(0xffffff, 5.0, 10);
+  torusKeyLight.position.set(2, 3, 2.5);
+  group.add(torusKeyLight);
+
+  // Background aura light behind the torus to create a silhouette backdrop effect
+  const torusBackLight = new THREE.PointLight(0xdcb44c, 9.0, 12);
+  torusBackLight.position.set(0, 0, -4.0); // directly behind the torus knot
+  group.add(torusBackLight);
+
   return group;
 }
 
