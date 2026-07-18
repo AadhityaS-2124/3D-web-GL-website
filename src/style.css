@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
 :root {
-  --color-bg: #08080a;
+  --color-bg: #060608;
   --color-text-primary: #ffffff;
   --color-text-muted: #8e8e93;
   --color-accent: #dcb44c; /* Liquid Gold */
   --color-accent-glow: rgba(220, 180, 76, 0.35);
   --color-border: rgba(255, 255, 255, 0.08);
-  --color-glass: rgba(10, 10, 12, 0.55);
+  --color-glass: rgba(10, 10, 12, 0.65);
   
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
@@ -95,7 +95,7 @@ body.clickable .custom-cursor-ring {
   position: relative;
   z-index: 2;
   width: 100%;
-  pointer-events: none; /* Let pointer events fall through to canvas */
+  pointer-events: none;
 }
 
 /* Allow pointer events only on interactive HTML modules */
@@ -103,7 +103,8 @@ body.clickable .custom-cursor-ring {
 .section-content, 
 .btn, 
 .nav-link,
-.inspect-close {
+.inspect-close,
+.contact-input {
   pointer-events: auto;
 }
 
@@ -229,10 +230,10 @@ body.clickable .custom-cursor-ring {
 }
 
 .section-content {
-  max-width: 500px;
+  max-width: 520px;
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1), transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .scroll-section.in-view .section-content {
@@ -266,18 +267,95 @@ body.clickable .custom-cursor-ring {
   margin-bottom: 30px;
 }
 
-/* Glass Card */
+/* Premium Glass HUD Card */
 .glass-card {
   background: var(--color-glass);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--color-border);
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* Premium Buttons */
+.tech-hud-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scrolling Technical Scanline */
+.tech-hud-card::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(220, 180, 76, 0.04) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  animation: scanline 6s infinite linear;
+}
+
+@keyframes scanline {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+/* 6. Technical HUD Metrics Components */
+.hud-metrics {
+  margin: 25px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 15px;
+}
+
+.metric-row {
+  margin-top: 15px;
+}
+
+.metric-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.metric-bar-bg {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.metric-bar {
+  height: 100%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Trigger fill on section in-view */
+.scroll-section.in-view .metric-bar {
+  transform: scaleX(1);
+}
+
+/* 7. Premium Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -314,7 +392,7 @@ body.clickable .custom-cursor-ring {
   box-shadow: 0 10px 20px var(--color-accent-glow);
 }
 
-/* 6. Section Specific layouts */
+/* 8. Section Layout Variances */
 .section-right {
   justify-content: flex-end;
 }
@@ -328,7 +406,7 @@ body.clickable .custom-cursor-ring {
   max-width: 650px;
 }
 
-/* Hero Section specifics */
+/* Hero Section Specifics */
 #hero {
   height: 100vh;
   display: flex;
@@ -400,7 +478,7 @@ body.clickable .custom-cursor-ring {
   100% { top: 100%; }
 }
 
-/* 7. Focused Inspect Mode Overlay */
+/* 9. Focused Inspect Mode Overlay */
 .inspect-overlay {
   position: fixed;
   top: 0;
@@ -408,15 +486,15 @@ body.clickable .custom-cursor-ring {
   width: 100%;
   height: 100%;
   z-index: 50;
-  background-color: rgba(6, 6, 8, 0.7);
+  background-color: rgba(4, 4, 6, 0.75);
   display: flex;
   align-items: center;
   padding: 0 8%;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .inspect-overlay.active {
@@ -490,7 +568,7 @@ body.clickable .custom-cursor-ring {
   transform: rotate(90deg);
 }
 
-/* 8. Preloader Component */
+/* 10. Preloader Component */
 .preloader {
   position: fixed;
   top: 0;
@@ -551,7 +629,7 @@ body.clickable .custom-cursor-ring {
   color: var(--color-accent);
 }
 
-/* Footer / Contact info styles */
+/* Clinician Forms & Grid */
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -593,6 +671,24 @@ body.clickable .custom-cursor-ring {
   color: var(--color-text-muted);
   letter-spacing: 0.1rem;
   text-transform: uppercase;
+  align-items: center;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: #30d158; /* Glowing green status */
+  border-radius: 50%;
+  margin-right: 2px;
+  box-shadow: 0 0 6px #30d158;
+  animation: statusPulse 2s infinite ease-in-out;
+}
+
+@keyframes statusPulse {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 10px #30d158; }
+  100% { transform: scale(0.9); opacity: 0.5; }
 }
 
 .footer-stats span span {
@@ -609,11 +705,13 @@ body.clickable .custom-cursor-ring {
     display: none; /* Hide top links on mobile for simplicity */
   }
   .section-nav, .scroll-progress-container {
-    display: none; /* Hide side navigators on mobile */
+    display: none; /* Hide side progress indicators on mobile */
   }
   .footer-stats {
     left: 20px;
     bottom: 10px;
+    font-size: 0.55rem;
+    gap: 12px;
   }
   .hero-title {
     font-size: 2.8rem;
@@ -627,6 +725,7 @@ body.clickable .custom-cursor-ring {
   }
   .glass-card {
     padding: 25px;
+    width: 100%;
   }
   .inspect-overlay {
     padding: 0 6%;
@@ -634,5 +733,8 @@ body.clickable .custom-cursor-ring {
   .inspect-close {
     top: 20px;
     right: 20px;
+  }
+  .inspect-card {
+    max-width: 100%;
   }
 }

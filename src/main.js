@@ -110,19 +110,19 @@ function populateInspectCard(activeObject) {
   if (!activeObject) return;
 
   if (activeObject.name === 'quantum_core') {
-    inspectLabel.textContent = 'ASSET // QUANTUM_CORE_01';
-    inspectTitle.textContent = 'QUANTUM CORE';
-    inspectDesc.textContent = 'A multi-layered spatial core featuring a central gold PBR metallic core nested inside a high-index refractive glass shell with orbiting rings.';
-    inspectRough.textContent = '0.15 ROUGH';
-    inspectTrans.textContent = '90% GLASS';
-    inspectActionBtn.textContent = 'OVERCLOCK POWER CORE';
+    inspectLabel.textContent = 'IMPLANT // CEREBRAL_NEXUS_NODE';
+    inspectTitle.textContent = 'CEREBRAL NEXUS CORE';
+    inspectDesc.textContent = 'Trans-cortical neural processor implant interface. Measures local field potential (LFP) fluctuations and distributes computing tasks across 64,000 synaptic nodes.';
+    inspectRough.textContent = '8.4 GHz FREQ';
+    inspectTrans.textContent = '98% CLEAR PBR';
+    inspectActionBtn.textContent = 'INITIALIZE CEREBRAL OVERCLOCK';
   } else if (activeObject.name === 'kinetic_torus') {
-    inspectLabel.textContent = 'ASSET // KINETIC_TORUS_03';
-    inspectTitle.textContent = 'KINETIC TORUS';
-    inspectDesc.textContent = 'A high-friction dark titanium torus knot utilizing complex double-axis orbits and orbiting sub-satellite particle emitters.';
-    inspectRough.textContent = '0.12 SHINY';
-    inspectTrans.textContent = '0% OPAQUE';
-    inspectActionBtn.textContent = 'ENGAGE ROTATION HYPOTHESIS';
+    inspectLabel.textContent = 'INSTRUMENT // CORTICAL_CALIBRATION_ENGINE';
+    inspectTitle.textContent = 'CALIBRATION SCANNER';
+    inspectDesc.textContent = 'External high-resonance magnetic flux calibrator. Resolves spatial drift offsets on trans-cortical Nodes to ensure continuous signal alignment.';
+    inspectRough.textContent = '4.2 TESLA FLUX';
+    inspectTrans.textContent = '0.04 ms LATENCY';
+    inspectActionBtn.textContent = 'ENGAGE CALIBRATION SEQUENCE';
   }
 }
 
