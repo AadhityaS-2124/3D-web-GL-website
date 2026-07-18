@@ -119,20 +119,27 @@ function setupStateSubscribers() {
 function populateInspectCard(activeObject) {
   if (!activeObject) return;
 
+  const roughLabel = document.getElementById('inspect-object-rough-label');
+  const transLabel = document.getElementById('inspect-object-trans-label');
+
   if (activeObject.name === 'quantum_core') {
-    inspectLabel.textContent = 'IMPLANT // CEREBRAL_NEXUS_NODE';
-    inspectTitle.textContent = 'CEREBRAL NEXUS CORE';
-    inspectDesc.textContent = 'Trans-cortical neural processor implant interface. Measures local field potential (LFP) fluctuations and distributes computing tasks across 64,000 synaptic nodes.';
-    inspectRough.textContent = '8.4 GHz FREQ';
-    inspectTrans.textContent = '98% CLEAR PBR';
-    inspectActionBtn.textContent = 'INITIALIZE CEREBRAL OVERCLOCK';
+    inspectLabel.textContent = 'CORE // QUANTUM_CORE_01';
+    inspectTitle.textContent = 'QUANTUM CORE';
+    inspectDesc.textContent = 'A multi-layered spatial core featuring a central gold PBR metallic core nested inside a high-index refractive glass shell with orbiting rings.';
+    if (roughLabel) roughLabel.textContent = 'Roughness Map';
+    if (transLabel) transLabel.textContent = 'PBR Transmission';
+    inspectRough.textContent = '0.15 ROUGH';
+    inspectTrans.textContent = '90% GLASS';
+    inspectActionBtn.textContent = 'OVERCLOCK POWER CORE';
   } else if (activeObject.name === 'kinetic_torus') {
-    inspectLabel.textContent = 'INSTRUMENT // CORTICAL_CALIBRATION_ENGINE';
-    inspectTitle.textContent = 'CALIBRATION SCANNER';
-    inspectDesc.textContent = 'External high-resonance magnetic flux calibrator. Resolves spatial drift offsets on trans-cortical Nodes to ensure continuous signal alignment.';
-    inspectRough.textContent = '4.2 TESLA FLUX';
-    inspectTrans.textContent = '0.04 ms LATENCY';
-    inspectActionBtn.textContent = 'ENGAGE CALIBRATION SEQUENCE';
+    inspectLabel.textContent = 'ASSET // KINETIC_TORUS_03';
+    inspectTitle.textContent = 'KINETIC TORUS';
+    inspectDesc.textContent = 'A high-friction dark titanium torus knot utilizing complex double-axis orbits and orbiting sub-satellite particle emitters.';
+    if (roughLabel) roughLabel.textContent = 'Orbital Friction';
+    if (transLabel) transLabel.textContent = 'PBR Opacity';
+    inspectRough.textContent = '0.12 SHINY';
+    inspectTrans.textContent = '0% OPAQUE';
+    inspectActionBtn.textContent = 'ENGAGE ROTATION SEQUENCE';
   }
 }
 
@@ -378,27 +385,26 @@ function updateLiveReadings(time, activeObject) {
   const stateValEl = document.getElementById('inspect-object-state');
   
   if (activeObject.name === 'quantum_core') {
-    const freq = (8.4 + Math.sin(time * 6.0) * 0.022 + (Math.random() - 0.5) * 0.005).toFixed(4);
-    const coherence = (98.4 + Math.cos(time * 3.5) * 0.14 + (Math.random() - 0.5) * 0.04).toFixed(3);
-    inspectRough.textContent = `${freq} GHz FREQ`;
-    inspectTrans.textContent = `${coherence}% SYNC`;
+    const rough = (0.15 + Math.sin(time * 6.0) * 0.004 + (Math.random() - 0.5) * 0.001).toFixed(4);
+    const trans = (90.0 + Math.cos(time * 3.5) * 0.4 + (Math.random() - 0.5) * 0.1).toFixed(2);
+    inspectRough.textContent = `${rough} ROUGH`;
+    inspectTrans.textContent = `${trans}% GLASS`;
     
     const stateCycle = Math.sin(time * 2.0);
-    inspectLabel.textContent = 'IMPLANT // CEREBRAL_NEXUS_NODE';
+    inspectLabel.textContent = 'CORE // QUANTUM_CORE_01';
     if (stateValEl) {
-      stateValEl.textContent = stateCycle > 0.88 ? 'CALIBRATING' : 'NOMINAL';
+      stateValEl.textContent = stateCycle > 0.88 ? 'CALIBRATING' : 'ACTIVE';
       stateValEl.style.color = stateCycle > 0.88 ? '#ff9f0a' : '#30d158';
     }
   } else if (activeObject.name === 'kinetic_torus') {
-    const flux = (4.2 + Math.sin(time * 5.0) * 0.045 + (Math.random() - 0.5) * 0.01).toFixed(3);
-    const latency = (0.04 + Math.cos(time * 7.0) * 0.0025 + (Math.random() - 0.5) * 0.0004).toFixed(5);
-    inspectRough.textContent = `${flux} TESLA FLUX`;
-    inspectTrans.textContent = `${latency} ms LATENCY`;
+    const shiny = (0.12 + Math.sin(time * 5.0) * 0.003 + (Math.random() - 0.5) * 0.001).toFixed(4);
+    inspectRough.textContent = `${shiny} SHINY`;
+    inspectTrans.textContent = `0% OPAQUE`;
     
     const stateCycle = Math.sin(time * 1.5);
-    inspectLabel.textContent = 'INSTRUMENT // CORTICAL_CALIBRATION_ENGINE';
+    inspectLabel.textContent = 'ASSET // KINETIC_TORUS_03';
     if (stateValEl) {
-      stateValEl.textContent = stateCycle > 0.8 ? 'ADJUSTING' : 'CALIBRATED';
+      stateValEl.textContent = stateCycle > 0.8 ? 'CALIBRATING' : 'STABLE';
       stateValEl.style.color = stateCycle > 0.8 ? '#ff9f0a' : '#30d158';
     }
   }
