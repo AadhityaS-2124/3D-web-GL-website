@@ -27,6 +27,10 @@ const inspectCloseBtn = document.getElementById('inspect-close');
 const inspectActionBtn = document.getElementById('inspect-action-btn');
 const inspectPromptBtn = document.getElementById('inspect-prompt-btn');
 
+// Oscilloscope elements
+const inspectCanvas = document.getElementById('inspect-graph-canvas');
+let inspectCtx = null;
+
 let sceneManager;
 let objects;
 
@@ -38,6 +42,10 @@ function init() {
   
   // Set raycast targets
   sceneManager.setInteractiveTargets(objects.interactiveTargets);
+
+  if (inspectCanvas) {
+    inspectCtx = inspectCanvas.getContext('2d');
+  }
 
   // 2. Wire up state subscribers
   setupStateSubscribers();
@@ -84,11 +92,13 @@ function setupStateSubscribers() {
   // Inspect mode change -> toggle overlay and body scrolling
   state.subscribe('inspectMode', (isInspecting) => {
     if (isInspecting) {
+      document.body.classList.add('inspect-active');
       const activeObj = state.get('activeObject');
       populateInspectCard(activeObj);
       inspectOverlay.classList.add('active');
       document.body.style.overflow = 'hidden';
     } else {
+      document.body.classList.remove('inspect-active');
       inspectOverlay.classList.remove('active');
       document.body.style.overflow = '';
     }
@@ -212,14 +222,23 @@ function registerEvents() {
       if (href) {
         const targetSec = document.querySelector(href);
         if (targetSec) {
-          gsap.to(document.documentElement, {
-            scrollTop: targetSec.offsetTop,
-            duration: 1.5,
-            ease: 'power3.inOut'
-          });
+          scrollToOffset(targetSec.offsetTop);
         }
       }
     });
+  });
+}
+
+// Custom browser-independent scroll animation using GSAP updates
+function scrollToOffset(targetOffset) {
+  const scrollObj = { y: window.scrollY };
+  gsap.to(scrollObj, {
+    y: targetOffset,
+    duration: 1.5,
+    ease: 'power3.inOut',
+    onUpdate: () => {
+      window.scrollTo(0, scrollObj.y);
+    }
   });
 }
 
@@ -227,11 +246,7 @@ function registerEvents() {
 function scrollToSection(sectionIdx) {
   const sections = document.querySelectorAll('.scroll-section');
   if (sections[sectionIdx]) {
-    gsap.to(document.documentElement, {
-      scrollTop: sections[sectionIdx].offsetTop,
-      duration: 1.8,
-      ease: 'power3.inOut'
-    });
+    scrollToOffset(sections[sectionIdx].offsetTop);
   }
 }
 
@@ -291,7 +306,102 @@ function tick() {
   // 4. Render Three.js scene through post-processing EffectComposer pipeline
   sceneManager.render(time, currentScroll, state.get('mouse'));
 
+  // 5. Live inspect mode oscilloscope rendering and diagnostic readings
+  if (state.get('inspectMode')) {
+    const activeObj = state.get('activeObject');
+    updateLiveReadings(time, activeObj);
+    drawOscilloscope(time);
+  }
+
   requestAnimationFrame(tick);
+}
+
+// Draw a live medical oscilloscope wave on HTML5 canvas
+function drawOscilloscope(time) {
+  if (!inspectCtx) return;
+  
+  const width = inspectCanvas.clientWidth;
+  const height = inspectCanvas.clientHeight;
+  if (inspectCanvas.width !== width || inspectCanvas.height !== height) {
+    inspectCanvas.width = width;
+    inspectCanvas.height = height;
+  }
+  
+  inspectCtx.clearRect(0, 0, width, height);
+  
+  // Grid Lines
+  inspectCtx.strokeStyle = 'rgba(220, 180, 76, 0.05)';
+  inspectCtx.lineWidth = 1;
+  for (let y = 10; y < height; y += 15) {
+    inspectCtx.beginPath();
+    inspectCtx.moveTo(0, y);
+    inspectCtx.lineTo(width, y);
+    inspectCtx.stroke();
+  }
+  for (let x = 10; x < width; x += 20) {
+    inspectCtx.beginPath();
+    inspectCtx.moveTo(x, 0);
+    inspectCtx.lineTo(x, height);
+    inspectCtx.stroke();
+  }
+  
+  // Glowing Bio-electrical Wave
+  inspectCtx.strokeStyle = '#dcb44c';
+  inspectCtx.shadowColor = '#dcb44c';
+  inspectCtx.shadowBlur = 6;
+  inspectCtx.lineWidth = 1.5;
+  inspectCtx.beginPath();
+  
+  const centerY = height / 2;
+  for (let x = 0; x < width; x++) {
+    const angle1 = (x * 0.028) + (time * 6.0);
+    const angle2 = (x * 0.065) - (time * 4.0);
+    const noise = (Math.sin(x * 0.15 + time * 12.0) * 1.5) * (Math.random() * 0.2 + 0.9);
+    
+    const wave = Math.sin(angle1) * 12.0 + Math.cos(angle2) * 6.0 + noise;
+    const y = centerY + wave;
+    
+    if (x === 0) {
+      inspectCtx.moveTo(x, y);
+    } else {
+      inspectCtx.lineTo(x, y);
+    }
+  }
+  inspectCtx.stroke();
+  inspectCtx.shadowBlur = 0;
+}
+
+// Flicker values dynamically to look like real active sensors
+function updateLiveReadings(time, activeObject) {
+  if (!activeObject) return;
+  
+  const stateValEl = document.getElementById('inspect-object-state');
+  
+  if (activeObject.name === 'quantum_core') {
+    const freq = (8.4 + Math.sin(time * 6.0) * 0.022 + (Math.random() - 0.5) * 0.005).toFixed(4);
+    const coherence = (98.4 + Math.cos(time * 3.5) * 0.14 + (Math.random() - 0.5) * 0.04).toFixed(3);
+    inspectRough.textContent = `${freq} GHz FREQ`;
+    inspectTrans.textContent = `${coherence}% SYNC`;
+    
+    const stateCycle = Math.sin(time * 2.0);
+    inspectLabel.textContent = 'IMPLANT // CEREBRAL_NEXUS_NODE';
+    if (stateValEl) {
+      stateValEl.textContent = stateCycle > 0.88 ? 'CALIBRATING' : 'NOMINAL';
+      stateValEl.style.color = stateCycle > 0.88 ? '#ff9f0a' : '#30d158';
+    }
+  } else if (activeObject.name === 'kinetic_torus') {
+    const flux = (4.2 + Math.sin(time * 5.0) * 0.045 + (Math.random() - 0.5) * 0.01).toFixed(3);
+    const latency = (0.04 + Math.cos(time * 7.0) * 0.0025 + (Math.random() - 0.5) * 0.0004).toFixed(5);
+    inspectRough.textContent = `${flux} TESLA FLUX`;
+    inspectTrans.textContent = `${latency} ms LATENCY`;
+    
+    const stateCycle = Math.sin(time * 1.5);
+    inspectLabel.textContent = 'INSTRUMENT // CORTICAL_CALIBRATION_ENGINE';
+    if (stateValEl) {
+      stateValEl.textContent = stateCycle > 0.8 ? 'ADJUSTING' : 'CALIBRATED';
+      stateValEl.style.color = stateCycle > 0.8 ? '#ff9f0a' : '#30d158';
+    }
+  }
 }
 
 // Initialize on DOM loaded

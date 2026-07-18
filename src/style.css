@@ -120,6 +120,7 @@ body.clickable .custom-cursor-ring {
   align-items: center;
   z-index: 100;
   mix-blend-mode: difference;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .logo {
@@ -180,6 +181,20 @@ body.clickable .custom-cursor-ring {
   flex-direction: column;
   gap: 20px;
   z-index: 100;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hide UI elements in inspect focus mode to prevent overlaps */
+body.inspect-active .header {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-25px);
+}
+
+body.inspect-active .section-nav {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(25px);
 }
 
 .section-dot {
